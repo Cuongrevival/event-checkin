@@ -10,8 +10,8 @@ const APP_CONFIG = {
     googleForm: {
         // Form Action URL for submission. Replace the Form ID as needed.
         // Format: https://docs.google.com/forms/d/e/[FORM_ID]/formResponse
-        actionUrl: "https://docs.google.com/forms/d/e/1FAIpQLSfY39rCrC-nzsQgui7sfC0i12nQ1Tvu8FYwRtC0CimPQa7qFQ/formResponse",
-        
+        actionUrl: "https://docs.google.com/forms/d/e/1FAIpQLSfY39rCrC-nzsQgui7sfC0i12nQ1Tvu8FYwRtC0CimPQa7qFQ/viewform?usp=publish-editor",
+
         // entry IDs from your Google Form pre-filled link
         entries: {
             name: "entry.1908979897",           // Form field for Participant Name
