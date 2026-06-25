@@ -36,6 +36,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const iframeResponse = document.getElementById("googleFormResponse");
     const submittedDetails = document.getElementById("submittedDetails");
     const anotherCheckinBtn = document.getElementById("anotherCheckinBtn");
+    
+    // Success "Event Found" notification banner elements
+    const eventFoundAlert = document.getElementById("eventFoundAlert");
+    const foundEventName = document.getElementById("foundEventName");
 
     // Submission State Flags
     let isSubmitting = false;
@@ -106,9 +110,21 @@ document.addEventListener("DOMContentLoaded", () => {
         eventNameInput.value = event.name;
         eventLocationInput.value = event.location;
 
+        // Populate "Event Found" notification banner details
+        if (eventFoundAlert && foundEventName) {
+            foundEventName.textContent = event.name;
+            eventFoundAlert.removeAttribute("hidden");
+        }
+
         // Render card
         loadingState.setAttribute("hidden", "true");
         mainCheckinCard.removeAttribute("hidden");
+
+        // Scroll smoothly to form area and focus Name input
+        mainCheckinCard.scrollIntoView({ behavior: "smooth", block: "start" });
+        setTimeout(() => {
+            fullNameInput.focus();
+        }, 600);
     }
 
     /**

@@ -101,6 +101,14 @@
 
             <!-- Check-in Form Block -->
             <div class="form-wrapper">
+                <!-- Event Found Alert -->
+                <div id="eventFoundAlert" class="alert-box alert-success" role="alert" hidden>
+                    <span class="alert-icon">✓</span>
+                    <div class="alert-content">
+                        Đã xác nhận sự kiện: <strong id="foundEventName"></strong>. Vui lòng nhập thông tin check-in bên dưới.
+                    </div>
+                </div>
+
                 <p class="form-instructions">Please enter your details below to confirm attendance. Fields marked with an asterisk (<span class="required">*</span>) are required.</p>
                 
                 <form id="checkInForm" method="POST" target="googleFormResponse" novalidate>

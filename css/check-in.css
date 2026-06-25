@@ -104,6 +104,10 @@ body {
     width: 100%;
 }
 
+.checkin-card[hidden], .status-card[hidden] {
+    display: none !important;
+}
+
 .status-card {
     padding: 48px 32px;
     text-align: center;
@@ -391,6 +395,12 @@ body {
     background-color: #fef2f2;
     border: 1px solid #fee2e2;
     color: #991b1b;
+}
+
+.alert-success {
+    background-color: #ecfdf5;
+    border: 1px solid #d1fae5;
+    color: #065f46;
 }
 
 .alert-icon {
