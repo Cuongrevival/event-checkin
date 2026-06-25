@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Check-in to your selected festival event instantly. Enter your details to register.">
+    <title>Event Check-in</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="css/check-in.css">
+</head>
+<body>
+    <!-- Top Decorative Banner -->
+    <div class="header-banner" aria-hidden="true"></div>
+
+    <main class="checkin-container">
+        <!-- Back Button -->
+        <a href="index.html" class="back-link" id="backToListBtn">
+            <span class="back-arrow" aria-hidden="true">&larr;</span> Back to Events
+        </a>
+
+        <!-- Loading Spinner Container -->
+        <div id="loadingState" class="status-card" aria-live="polite">
+            <div class="spinner" aria-hidden="true"></div>
+            <p class="status-text">Loading event details...</p>
+        </div>
+
+        <!-- Event Not Found Container -->
+        <div id="notFoundState" class="status-card" hidden aria-live="polite">
+            <span class="status-icon" aria-hidden="true">⚠️</span>
+            <h2 class="status-title">Event not found</h2>
+            <p class="status-text">The QR code or check-in link is invalid or has expired.</p>
+            <a href="index.html" class="btn btn-primary">Return to Event List</a>
+        </div>
+
+        <!-- Success Message Container -->
+        <div id="successState" class="status-card" hidden aria-live="polite">
+            <div class="success-checkmark">
+                <div class="check-icon">
+                    <span class="icon-line line-tip"></span>
+                    <span class="icon-line line-long"></span>
+                    <div class="icon-circle"></div>
+                    <div class="icon-fix"></div>
+                </div>
+            </div>
+            <h2 class="status-title">Check-in Successful!</h2>
+            <p class="status-text">Thank you. Your information has been submitted successfully.</p>
+            
+            <div class="submission-summary" id="submittedDetails">
+                <!-- Filled in by check-in.js -->
+            </div>
+
+            <div class="success-actions">
+                <button type="button" id="anotherCheckinBtn" class="btn btn-secondary">Check-in Another Person</button>
+                <a href="index.html" class="btn btn-outline">Back to Event List</a>
+            </div>
+        </div>
+
+        <!-- Main Check-in Card (visible once event is loaded) -->
+        <div id="mainCheckinCard" class="checkin-card" hidden>
+            <!-- Banner Image of Event -->
+            <div class="event-banner">
+                <img id="eventImage" src="" alt="Event Banner">
+                <div class="event-badge" id="eventBadge">Check-in Form</div>
+            </div>
+
+            <!-- Event Details -->
+            <div class="event-info-panel">
+                <h2 id="eventTitle" class="event-title">Summer Music Festival</h2>
+                
+                <div class="event-meta-grid">
+                    <div class="meta-row">
+                        <span class="meta-icon" aria-hidden="true">📅</span>
+                        <div>
+                            <div class="meta-label">Date</div>
+                            <div class="meta-val" id="eventDate">15/07/2026</div>
+                        </div>
+                    </div>
+                    <div class="meta-row">
+                        <span class="meta-icon" aria-hidden="true">🕒</span>
+                        <div>
+                            <div class="meta-label">Time</div>
+                            <div class="meta-val" id="eventTime">18:00 - 22:00</div>
+                        </div>
+                    </div>
+                    <div class="meta-row double-column">
+                        <span class="meta-icon" aria-hidden="true">📍</span>
+                        <div>
+                            <div class="meta-label">Location</div>
+                            <div class="meta-val" id="eventLocationText">Hoan Kiem Walking Street</div>
+                            <div class="meta-subval" id="eventAddress">Hoan Kiem District, Hanoi</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Check-in Form Block -->
+            <div class="form-wrapper">
+                <p class="form-instructions">Please enter your details below to confirm attendance. Fields marked with an asterisk (<span class="required">*</span>) are required.</p>
+                
+                <form id="checkInForm" method="POST" target="googleFormResponse" novalidate>
+                    <!-- Form input elements -->
+                    <div class="form-group">
+                        <label for="fullName">Full Name <span class="required" aria-hidden="true">*</span></label>
+                        <input 
+                            type="text" 
+                            id="fullName" 
+                            placeholder="Enter your full name" 
+                            autocomplete="name" 
+                            maxlength="100" 
+                            required
+                        >
+                        <small id="nameError" class="field-error" aria-live="assertive"></small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address <span class="required" aria-hidden="true">*</span></label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            placeholder="username@domain.com" 
+                            autocomplete="email" 
+                            maxlength="150" 
+                            required
+                        >
+                        <small id="emailError" class="field-error" aria-live="assertive"></small>
+                    </div>
+
+                    <!-- Hidden fields to transmit event info automatically -->
+                    <input type="hidden" id="eventId">
+                    <input type="hidden" id="eventName">
+                    <input type="hidden" id="eventLocation">
+
+                    <!-- Error Alert Box -->
+                    <div id="submitErrorAlert" class="alert-box alert-danger" hidden role="alert">
+                        <span class="alert-icon">⚠️</span>
+                        <div class="alert-content" id="submitErrorMsg">
+                            The submission is taking longer than expected. Please check your connection and try again.
+                        </div>
+                    </div>
+
+                    <button type="submit" id="submitButton" class="btn btn-primary">
+                        <span id="btnText">Confirm Check-in</span>
+                        <span id="btnSpinner" class="btn-spinner" hidden aria-hidden="true"></span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Hidden iframe to capture post-submit response from Google Form (prevents redirecting page) -->
+    <iframe 
+        name="googleFormResponse" 
+        id="googleFormResponse" 
+        style="display: none; width: 0; height: 0; border: none;"
+        title="Form response catcher"
+    ></iframe>
+
+    <!-- Configurations, Data and logic -->
+    <script src="js/config.js"></script>
+    <script src="js/events-data.js"></script>
+    <script src="js/check-in.js"></script>
+</body>
+</html>

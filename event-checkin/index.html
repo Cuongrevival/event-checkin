@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Discover local festivals and complete check-ins securely using QR codes. Fast, easy, and responsive check-in system.">
+    <title>Festival Check-in - Discover Events</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Top Decorative Gradient Header -->
+    <div class="header-banner" aria-hidden="true"></div>
+
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo-area">
+                <div class="logo-icon" aria-hidden="true">✨</div>
+                <h1 class="logo-title">Festival Check-in</h1>
+            </div>
+            <p class="header-subtitle">Your gateway to the city's most vibrant celebrations. Scan, check in, and enjoy.</p>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <section class="events-section" aria-labelledby="events-section-title">
+            <h2 id="events-section-title" class="sr-only">Available Events</h2>
+            
+            <!-- Dynamic Event Cards Grid -->
+            <div id="eventGrid" class="event-grid" aria-live="polite">
+                <!-- Skeletons will show during initial rendering -->
+                <div class="card-skeleton" aria-hidden="true">
+                    <div class="skeleton-image"></div>
+                    <div class="skeleton-text skeleton-title"></div>
+                    <div class="skeleton-text skeleton-meta"></div>
+                    <div class="skeleton-text skeleton-desc"></div>
+                    <div class="skeleton-button"></div>
+                </div>
+                <div class="card-skeleton" aria-hidden="true">
+                    <div class="skeleton-image"></div>
+                    <div class="skeleton-text skeleton-title"></div>
+                    <div class="skeleton-text skeleton-meta"></div>
+                    <div class="skeleton-text skeleton-desc"></div>
+                    <div class="skeleton-button"></div>
+                </div>
+                <div class="card-skeleton" aria-hidden="true">
+                    <div class="skeleton-image"></div>
+                    <div class="skeleton-text skeleton-title"></div>
+                    <div class="skeleton-text skeleton-meta"></div>
+                    <div class="skeleton-text skeleton-desc"></div>
+                    <div class="skeleton-button"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="footer-container">
+            <p>&copy; 2026 Festival Check-in System. All rights reserved.</p>
+            <p class="footer-note">Designed for modern mobile-first interactive experiences.</p>
+        </div>
+    </footer>
+
+    <!-- QR Modal Popup -->
+    <div id="qrModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc" hidden>
+        <div class="modal-backdrop" id="modalBackdrop"></div>
+        <div class="modal-wrapper">
+            <div class="modal-content">
+                <button type="button" id="closeModalBtn" class="close-btn" aria-label="Close modal">&times;</button>
+                
+                <h3 id="modalTitle" class="modal-title">Summer Music Festival</h3>
+                <p id="modalDesc" class="modal-instructions">Scan this QR code with your phone to check in.</p>
+                
+                <div class="qr-code-container">
+                    <!-- Target for QRCode library -->
+                    <div id="qrcode" class="qrcode-wrapper"></div>
+                </div>
+                
+                <div class="test-link-container">
+                    <p class="test-link-label">Testing on the same device?</p>
+                    <a id="directCheckinLink" href="#" class="btn btn-secondary">Open Check-in Page Directly</a>
+                </div>
+
+                <button type="button" id="closeModalBottomBtn" class="btn btn-outline">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- QRCode JS Library CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+    
+    <!-- App Configurations, Data and Logic -->
+    <script src="js/config.js"></script>
+    <script src="js/events-data.js"></script>
+    <script src="js/events.js"></script>
+</body>
+</html>
