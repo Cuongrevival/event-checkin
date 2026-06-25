@@ -146,37 +146,40 @@ function isValidEvent(event) {
  * Builds the pre-filled Google Form URL containing Event Name and Location.
  */
 function buildGoogleFormUrl(selectedEvent) {
-    if (!selectedEvent) {
-        throw new Error("Selected event is required.");
-    }
-
-    if (!selectedEvent.name) {
-        throw new Error("Event name is missing.");
-    }
-
-    if (!selectedEvent.location) {
-        throw new Error("Event location is missing.");
-    }
-
     const formConfig =
         window.APP_CONFIG.googleForm;
 
-    const url = new URL(formConfig.baseUrl);
+    if (!selectedEvent?.name) {
+        throw new Error(
+            "Event name is missing."
+        );
+    }
 
-    url.searchParams.set("usp", "pp_url");
+    if (!selectedEvent?.location) {
+        throw new Error(
+            "Event location is missing."
+        );
+    }
+
+    const url =
+        new URL(formConfig.baseUrl);
+
+    url.searchParams.set(
+        "usp",
+        "pp_url"
+    );
 
     url.searchParams.set(
         formConfig.entries.eventName,
-        selectedEvent.name
+        selectedEvent.name.trim()
     );
 
     url.searchParams.set(
         formConfig.entries.eventLocation,
-        selectedEvent.location
+        selectedEvent.location.trim()
     );
 
-    // Replace '+' with '%20' to match standard encoding
-    return url.toString().replace(/\+/g, "%20");
+    return url.toString();
 }
 
 /**
@@ -208,16 +211,6 @@ function handleCheckIn(eventId) {
         const googleFormUrl =
             buildGoogleFormUrl(selectedEvent);
 
-        console.log(
-            "Selected event:",
-            selectedEvent.id
-        );
-
-        console.log(
-            "Generated Google Form URL:",
-            googleFormUrl
-        );
-
         openQrModal(
             selectedEvent,
             googleFormUrl
@@ -244,19 +237,67 @@ function renderQrCode(googleFormUrl) {
 
     if (!qrContainer) {
         throw new Error(
-            "QR code container was not found."
+            'Element with ID "qrCode" was not found.'
         );
     }
 
-    qrContainer.innerHTML = "";
+    if (typeof window.QRCode !== "function") {
+        throw new Error(
+            "QRCode.js was not loaded."
+        );
+    }
 
-    new QRCode(qrContainer, {
-        text: googleFormUrl,
-        typeNumber: 0,
-        width: 320,
-        height: 320,
-        correctLevel: QRCode.CorrectLevel.M
-    });
+    if (
+        typeof googleFormUrl !== "string" ||
+        !googleFormUrl.startsWith(
+            "https://docs.google.com/forms/"
+        )
+    ) {
+        throw new Error(
+            "The generated Google Form URL is invalid."
+        );
+    }
+
+    const correctionLevels = [
+        window.QRCode.CorrectLevel.M,
+        window.QRCode.CorrectLevel.L
+    ];
+
+    let lastError = null;
+
+    for (const correctionLevel of correctionLevels) {
+        try {
+            qrContainer.replaceChildren();
+
+            new window.QRCode(qrContainer, {
+                text: googleFormUrl,
+
+                // Allow QRCode.js to automatically choose
+                // the required QR version.
+                typeNumber: 0,
+
+                correctLevel: correctionLevel,
+
+                // Long URLs create dense QR codes,
+                // so render them at a larger size.
+                width: 340,
+                height: 340
+            });
+
+            return;
+        } catch (error) {
+            lastError = error;
+            qrContainer.replaceChildren();
+
+            console.warn(
+                "QR generation attempt failed:",
+                error
+            );
+        }
+    }
+
+    throw lastError ??
+        new Error("Unable to generate QR code.");
 }
 
 /**
@@ -303,6 +344,16 @@ function openQrModal(
 
     openFormButton.href =
         googleFormUrl;
+
+    console.log(
+        "Google Form URL length:",
+        googleFormUrl.length
+    );
+
+    console.log(
+        "Generated Google Form URL:",
+        googleFormUrl
+    );
 
     renderQrCode(googleFormUrl);
 
