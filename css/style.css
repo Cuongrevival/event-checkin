@@ -478,7 +478,7 @@ input:focus-visible {
     border: 1px solid #f3f4f6;
 }
 
-.qrcode-wrapper img {
+.qr-code img {
     margin: 0 auto;
     border-radius: 8px;
 }

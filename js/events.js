@@ -62,22 +62,12 @@ document.addEventListener("DOMContentLoaded", () => {
                         </div>
                     </div>
                     <p class="event-card-desc">${escapeHtml(event.description)}</p>
-                    <button type="button" class="btn btn-primary check-in-btn" data-event-id="${escapeHtml(event.id)}">
+                    <button type="button" class="btn btn-primary check-in-button" data-event-id="${escapeHtml(event.id)}">
                         Check-in
                     </button>
                 </div>
             `;
             eventGrid.appendChild(card);
-        });
-
-        // Attach listeners to Check-in buttons
-        const checkinButtons = eventGrid.querySelectorAll(".check-in-btn");
-        checkinButtons.forEach(btn => {
-            btn.addEventListener("click", (e) => {
-                const eventId = e.currentTarget.getAttribute("data-event-id");
-                lastActiveElement = e.currentTarget;
-                handleCheckIn(eventId);
-            });
         });
     }
 
@@ -122,6 +112,25 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /**
+ * Event delegation for check-in buttons
+ */
+document.addEventListener("click", event => {
+    const button = event.target.closest(
+        ".check-in-button"
+    );
+
+    if (!button) {
+        return;
+    }
+
+    const eventId =
+        button.dataset.eventId;
+
+    lastActiveElement = button;
+    handleCheckIn(eventId);
+});
+
+/**
  * Validates if the event has all the required properties to generate a QR code.
  */
 function isValidEvent(event) {
@@ -136,34 +145,62 @@ function isValidEvent(event) {
 /**
  * Builds the pre-filled Google Form URL containing Event Name and Location.
  */
-function buildGoogleFormUrl(event) {
-    // Temporarily return fixed URL for initial testing
-    return "https://docs.google.com/forms/d/e/1FAIpQLSfY39rCrC-nzsQgui7sfC0i12nQ1Tvu8FYwRtC0CimPQa7qFQ/viewform?usp=pp_url&entry.2118289221=Street%20Food%20Festival&entry.524089912=West%20Lake%20Culinary%20Zone";
+function buildGoogleFormUrl(selectedEvent) {
+    if (!selectedEvent) {
+        throw new Error("Selected event is required.");
+    }
+
+    if (!selectedEvent.name) {
+        throw new Error("Event name is missing.");
+    }
+
+    if (!selectedEvent.location) {
+        throw new Error("Event location is missing.");
+    }
+
+    const formConfig =
+        window.APP_CONFIG.googleForm;
+
+    const url = new URL(formConfig.baseUrl);
+
+    url.searchParams.set("usp", "pp_url");
+
+    url.searchParams.set(
+        formConfig.entries.eventName,
+        selectedEvent.name
+    );
+
+    url.searchParams.set(
+        formConfig.entries.eventLocation,
+        selectedEvent.location
+    );
+
+    // Replace '+' with '%20' to match standard encoding
+    return url.toString().replace(/\+/g, "%20");
 }
 
 /**
  * Handles check-in button clicks: Validates, constructs URL, and opens the QR modal.
  */
 function handleCheckIn(eventId) {
-    const selectedEvent = EVENTS.find(
+    const events =
+        window.APP_CONFIG.events || window.EVENTS || (typeof EVENTS !== "undefined" ? EVENTS : []);
+
+    const selectedEvent = events.find(
         event => event.id === eventId
     );
 
     if (!selectedEvent) {
-        console.error("Event not found for ID:", eventId);
-        showToast(
-            "Event not found. Please refresh the page.",
-            "error"
+        console.error(
+            "Event not found:",
+            eventId
         );
-        return;
-    }
 
-    if (!isValidEvent(selectedEvent)) {
-        console.error("Invalid event data for ID:", eventId);
-        showToast(
+        showMessage(
             "Event not found. Please refresh the page.",
             "error"
         );
+
         return;
     }
 
@@ -171,12 +208,28 @@ function handleCheckIn(eventId) {
         const googleFormUrl =
             buildGoogleFormUrl(selectedEvent);
 
-        openQrModal(selectedEvent, googleFormUrl);
-    } catch (error) {
-        console.error("Unable to create QR link:", error);
+        console.log(
+            "Selected event:",
+            selectedEvent.id
+        );
 
-        showToast(
-            "Unable to create the check-in QR code.",
+        console.log(
+            "Generated Google Form URL:",
+            googleFormUrl
+        );
+
+        openQrModal(
+            selectedEvent,
+            googleFormUrl
+        );
+    } catch (error) {
+        console.error(
+            "Unable to create Google Form URL:",
+            error
+        );
+
+        showMessage(
+            "Unable to create the registration QR code.",
             "error"
         );
     }
@@ -189,12 +242,18 @@ function renderQrCode(googleFormUrl) {
     const qrContainer =
         document.getElementById("qrCode");
 
+    if (!qrContainer) {
+        throw new Error(
+            "QR code container was not found."
+        );
+    }
+
     qrContainer.innerHTML = "";
 
     new QRCode(qrContainer, {
         text: googleFormUrl,
-        width: 220,
-        height: 220,
+        width: 260,
+        height: 260,
         correctLevel: QRCode.CorrectLevel.H
     });
 }
@@ -202,27 +261,55 @@ function renderQrCode(googleFormUrl) {
 /**
  * Populates and displays the QR modal.
  */
-function openQrModal(event, googleFormUrl) {
-    const modal = document.getElementById("qrModal");
+function openQrModal(
+    selectedEvent,
+    googleFormUrl
+) {
+    const modal =
+        document.getElementById("qrModal");
 
-    document.getElementById(
-        "qrEventName"
-    ).textContent = event.name;
+    const eventNameElement =
+        document.getElementById(
+            "qrEventName"
+        );
 
-    document.getElementById(
-        "qrEventLocation"
-    ).textContent = event.location;
+    const eventLocationElement =
+        document.getElementById(
+            "qrEventLocation"
+        );
 
-    const openFormButton = document.getElementById(
-        "openGoogleFormButton"
-    );
+    const openFormButton =
+        document.getElementById(
+            "openGoogleFormButton"
+        );
 
-    openFormButton.href = googleFormUrl;
+    if (
+        !modal ||
+        !eventNameElement ||
+        !eventLocationElement ||
+        !openFormButton
+    ) {
+        throw new Error(
+            "Required QR modal elements are missing."
+        );
+    }
+
+    eventNameElement.textContent =
+        selectedEvent.name;
+
+    eventLocationElement.textContent =
+        selectedEvent.location;
+
+    openFormButton.href =
+        googleFormUrl;
 
     renderQrCode(googleFormUrl);
 
     modal.hidden = false;
-    document.body.classList.add("modal-open");
+
+    document.body.classList.add(
+        "modal-open"
+    );
 }
 
 /**
@@ -239,6 +326,13 @@ function closeQrModal() {
     if (lastActiveElement) {
         lastActiveElement.focus();
     }
+}
+
+/**
+ * Alias helper function for toast messages
+ */
+function showMessage(message, type = "error") {
+    showToast(message, type);
 }
 
 /**

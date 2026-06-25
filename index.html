@@ -72,20 +72,20 @@
         <div class="modal-backdrop" id="modalBackdrop"></div>
         <div class="modal-wrapper">
             <div class="modal-content">
-                <button type="button" id="closeQrModal" class="close-btn" aria-label="Close QR modal">&times;</button>
+                <button type="button" id="closeQrModal" class="close-btn" aria-label="Close QR dialog">&times;</button>
                 
-                <h2 id="qrModalTitle" class="modal-title" style="text-align: center; margin-bottom: 16px; font-weight: 800;">Scan to Check In</h2>
+                <h2 id="qrModalTitle" class="modal-title" style="text-align: center; margin-bottom: 16px; font-weight: 800;">Scan to Register</h2>
                 
                 <h3 id="qrEventName" style="font-family: var(--font-heading); font-size: 1.4rem; font-weight: 750; margin-bottom: 6px; text-align: center; color: var(--text-main); padding-right: 20px; padding-left: 20px;"></h3>
                 <p id="qrEventLocation" style="text-align: center; font-size: 0.95rem; color: var(--text-muted); margin-bottom: 24px; padding-right: 20px; padding-left: 20px;"></p>
                 
                 <div class="qr-code-container">
                     <!-- Target for QRCode library -->
-                    <div id="qrCode" class="qrcode-wrapper"></div>
+                    <div id="qrCode" class="qr-code" aria-label="Event registration QR code"></div>
                 </div>
                 
                 <p style="text-align: center; font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px; padding-right: 10px; padding-left: 10px;">
-                    Scan this QR code using your phone to open the event registration form.
+                    Scan this QR code with your phone to open the event registration form.
                 </p>
 
                 <a id="openGoogleFormButton" class="btn btn-primary primary-button" target="_blank" rel="noopener noreferrer" style="margin-bottom: 10px;">
@@ -98,11 +98,11 @@
     </div>
 
     <!-- QRCode JS Library CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.js"></script>
     
     <!-- App Configurations, Data and Logic -->
-    <script src="js/config.js?v=1.0.1"></script>
-    <script src="js/events-data.js?v=1.0.1"></script>
-    <script src="js/events.js?v=1.0.1"></script>
+    <script src="js/config.js?v=6"></script>
+    <script src="js/events-data.js?v=6"></script>
+    <script src="js/events.js?v=6"></script>
 </body>
 </html>
