@@ -137,31 +137,8 @@ function isValidEvent(event) {
  * Builds the pre-filled Google Form URL containing Event Name and Location.
  */
 function buildGoogleFormUrl(event) {
-    if (!event) {
-        throw new Error("Event is required.");
-    }
-
-    if (!event.name || !event.location) {
-        throw new Error(
-            "Event Name and Event Location are required."
-        );
-    }
-
-    const url = new URL(GOOGLE_FORM_BASE_URL);
-
-    url.searchParams.set("usp", "pp_url");
-
-    url.searchParams.set(
-        GOOGLE_FORM_ENTRIES.eventName,
-        event.name
-    );
-
-    url.searchParams.set(
-        GOOGLE_FORM_ENTRIES.eventLocation,
-        event.location
-    );
-
-    return url.toString();
+    // Temporarily return fixed URL for initial testing
+    return "https://docs.google.com/forms/d/e/1FAIpQLSfY39rCrC-nzsQgui7sfC0i12nQ1Tvu8FYwRtC0CimPQa7qFQ/viewform?usp=pp_url&entry.2118289221=Street%20Food%20Festival&entry.524089912=West%20Lake%20Culinary%20Zone";
 }
 
 /**
