@@ -68,24 +68,29 @@
     </footer>
 
     <!-- QR Modal Popup -->
-    <div id="qrModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc" hidden>
+    <div id="qrModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="qrModalTitle" hidden>
         <div class="modal-backdrop" id="modalBackdrop"></div>
         <div class="modal-wrapper">
             <div class="modal-content">
-                <button type="button" id="closeModalBtn" class="close-btn" aria-label="Close modal">&times;</button>
+                <button type="button" id="closeQrModal" class="close-btn" aria-label="Close QR modal">&times;</button>
                 
-                <h3 id="modalTitle" class="modal-title">Summer Music Festival</h3>
-                <p id="modalDesc" class="modal-instructions">Scan this QR code with your phone to check in.</p>
+                <h2 id="qrModalTitle" class="modal-title" style="text-align: center; margin-bottom: 16px; font-weight: 800;">Scan to Check In</h2>
+                
+                <h3 id="qrEventName" style="font-family: var(--font-heading); font-size: 1.4rem; font-weight: 750; margin-bottom: 6px; text-align: center; color: var(--text-main); padding-right: 20px; padding-left: 20px;"></h3>
+                <p id="qrEventLocation" style="text-align: center; font-size: 0.95rem; color: var(--text-muted); margin-bottom: 24px; padding-right: 20px; padding-left: 20px;"></p>
                 
                 <div class="qr-code-container">
                     <!-- Target for QRCode library -->
-                    <div id="qrcode" class="qrcode-wrapper"></div>
+                    <div id="qrCode" class="qrcode-wrapper"></div>
                 </div>
                 
-                <div class="test-link-container">
-                    <p class="test-link-label">Testing on the same device?</p>
-                    <a id="directCheckinLink" href="#" class="btn btn-secondary">Open Check-in Page Directly</a>
-                </div>
+                <p style="text-align: center; font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px; padding-right: 10px; padding-left: 10px;">
+                    Scan this QR code using your phone to open the event registration form.
+                </p>
+
+                <a id="openGoogleFormButton" class="btn btn-primary primary-button" target="_blank" rel="noopener noreferrer" style="margin-bottom: 10px;">
+                    Open Google Form
+                </a>
 
                 <button type="button" id="closeModalBottomBtn" class="btn btn-outline">Close</button>
             </div>

@@ -397,6 +397,10 @@ input:focus-visible {
     display: none !important;
 }
 
+[hidden] {
+    display: none !important;
+}
+
 .modal-backdrop {
     position: absolute;
     top: 0;
