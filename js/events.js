@@ -252,9 +252,10 @@ function renderQrCode(googleFormUrl) {
 
     new QRCode(qrContainer, {
         text: googleFormUrl,
-        width: 260,
-        height: 260,
-        correctLevel: QRCode.CorrectLevel.H
+        typeNumber: 0,
+        width: 320,
+        height: 320,
+        correctLevel: QRCode.CorrectLevel.M
     });
 }
 
