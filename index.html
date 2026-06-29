@@ -1,19 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Discover local festivals and complete check-ins securely using QR codes. Fast, easy, and responsive check-in system.">
+    <meta name="description"
+        content="Discover local festivals and complete check-ins securely using QR codes. Fast, easy, and responsive check-in system.">
     <title>Festival Check-in - Discover Events</title>
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
     <!-- Custom Style Sheet -->
     <link rel="stylesheet" href="css/style.css?v=1.0.1">
 </head>
+
 <body>
     <!-- Top Decorative Gradient Header -->
     <div class="header-banner" aria-hidden="true"></div>
@@ -24,14 +29,15 @@
                 <div class="logo-icon" aria-hidden="true">✨</div>
                 <h1 class="logo-title">Festival Check-in</h1>
             </div>
-            <p class="header-subtitle">Your gateway to the city's most vibrant celebrations. Scan, check in, and enjoy.</p>
+            <p class="header-subtitle">Your gateway to the city's most vibrant celebrations. Scan, check in, and enjoy.
+            </p>
         </div>
     </header>
 
     <main class="main-content">
         <section class="events-section" aria-labelledby="events-section-title">
             <h2 id="events-section-title" class="sr-only">Available Events</h2>
-            
+
             <!-- Dynamic Event Cards Grid -->
             <div id="eventGrid" class="event-grid" aria-live="polite">
                 <!-- Skeletons will show during initial rendering -->
@@ -73,22 +79,29 @@
         <div class="modal-wrapper">
             <div class="modal-content">
                 <button type="button" id="closeQrModal" class="close-btn" aria-label="Close QR dialog">&times;</button>
-                
-                <h2 id="qrModalTitle" class="modal-title" style="text-align: center; margin-bottom: 16px; font-weight: 800;">Scan to Register</h2>
-                
-                <h3 id="qrEventName" style="font-family: var(--font-heading); font-size: 1.4rem; font-weight: 750; margin-bottom: 6px; text-align: center; color: var(--text-main); padding-right: 20px; padding-left: 20px;"></h3>
-                <p id="qrEventLocation" style="text-align: center; font-size: 0.95rem; color: var(--text-muted); margin-bottom: 24px; padding-right: 20px; padding-left: 20px;"></p>
-                
+
+                <h2 id="qrModalTitle" class="modal-title"
+                    style="text-align: center; margin-bottom: 16px; font-weight: 800;">Scan to Register</h2>
+
+                <h3 id="qrEventName"
+                    style="font-family: var(--font-heading); font-size: 1.4rem; font-weight: 750; margin-bottom: 6px; text-align: center; color: var(--text-main); padding-right: 20px; padding-left: 20px;">
+                </h3>
+                <p id="qrEventLocation"
+                    style="text-align: center; font-size: 0.95rem; color: var(--text-muted); margin-bottom: 24px; padding-right: 20px; padding-left: 20px;">
+                </p>
+
                 <div class="qr-code-container">
                     <!-- Target for QRCode library -->
                     <div id="qrCode" class="qr-code" aria-label="Event registration QR code"></div>
                 </div>
-                
-                <p style="text-align: center; font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px; padding-right: 10px; padding-left: 10px;">
-                    Scan this QR code with your phone to open the event registration form.
+
+                <p
+                    style="text-align: center; font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px; padding-right: 10px; padding-left: 10px;">
+                    Scan this QR code with your phone or click "Open Google Form" button if QR is not working.
                 </p>
 
-                <a id="openGoogleFormButton" class="btn btn-primary primary-button" target="_blank" rel="noopener noreferrer" style="margin-bottom: 10px;">
+                <a id="openGoogleFormButton" class="btn btn-primary primary-button" target="_blank"
+                    rel="noopener noreferrer" style="margin-bottom: 10px;">
                     Open Google Form
                 </a>
 
@@ -99,10 +112,11 @@
 
     <!-- QRCode JS Library CDN -->
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.js"></script>
-    
+
     <!-- App Configurations, Data and Logic -->
     <script src="js/config.js?v=6"></script>
     <script src="js/events-data.js?v=6"></script>
     <script src="js/events.js?v=1.0.2"></script>
 </body>
+
 </html>
